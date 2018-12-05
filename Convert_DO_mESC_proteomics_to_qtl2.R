@@ -69,6 +69,11 @@ K <- calc_kinship(probs = new_genoprobs,
 
 
 
+
+
+
+
+
 ### Formatting for qtl viewer
 dataset.esc.proteins <- list(annots       = annot,
                              covar        = covar,
@@ -84,6 +89,9 @@ markers        <- new_map
 original.peaks <- peaks
 
 rm(gmap, annot, covarTidy, covar, expr, new_genoprobs, new_map, new_map_list,peaks, map_dat, map_pQTL_rankZ.cmd, prelim_proteomics.cmd, pos_mb)
+
+
+
 
 
 
