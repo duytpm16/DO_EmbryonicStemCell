@@ -35,9 +35,10 @@ new_map     <- map_dat %>%
 
 
 # Convert the new map dataframe to list
-new_map_list <- map_df_to_list(new_map, chr_column = 'chr', 
-                               pos_column          = 'pos', 
-                               marker_column       = 'marker')
+new_map_list <- map_df_to_list(new_map, 
+                               chr_column     = 'chr', 
+                               pos_column     = 'pos', 
+                               marker_column  = 'marker')
 
 
 
