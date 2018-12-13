@@ -3,14 +3,17 @@
 lm_miQTL <- 
   function(threshold){
     
+    
+    ### Make threshold a vector to loop through
     threshold <- as.vector(threshold)
     
     
     
+    ### For each threshold...
     for(i in threshold){
       
         high_peaks <- lod.peaks %>%
-                                filter(lod >= i)
+                                filter(lod >= i & cis == TRUE)
       
       
       
