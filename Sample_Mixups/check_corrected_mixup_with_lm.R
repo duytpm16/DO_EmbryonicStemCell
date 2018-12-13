@@ -58,7 +58,6 @@ lm_QTL <-
                predicted_matrix[,j] <- predict(fit)                       # Get predicted value
           
             } # if
-        
         } # for j
       
       
@@ -81,4 +80,4 @@ lm_QTL <-
       assign(paste0('observed_matrix_',i), observed_matrix, envir = .GlobalEnv)
       
     } # for i in threshold
-  }
+ }
