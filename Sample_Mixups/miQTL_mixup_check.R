@@ -1,6 +1,6 @@
 ### Helper lm function. Runs lm on all pQTL that pass threshold
 #    1.) threshold to subset the lod.peaks data
-lm_QTL <- 
+lm_miQTL <- 
   function(threshold){
    
     ### Make threshold parameter a vector to loop over
