@@ -1,0 +1,36 @@
+Order of swapping
+
+Swapping around original genotype
+PB361.76_rep1 -> PB361.77_rep1
+PB361.77_rep1 -> PB361.81_rep1
+PB361.81_rep1 -> PB361.88_rep1
+PB361.88_rep1 -> PB361.76_rep1
+PB357.22_rep1 -> PB358.04_rep1
+PB358.04_rep1 -> PB357.22_rep1
+PB359.22_rep1 -> PB359.33_rep1
+
+
+
+
+
+original genotype to MUGA genotype
+PB360.07_rep1 -> PB360.70
+PB361.07_rep1 -> PB361.70
+PB362.04_rep1 -> PB362.40
+PB360.05_rep1 -> PB360.50
+PB366.72_rep1 -> PB361.72
+PB358.05_rep1 -> PB358.50
+PB359.06_rep1 -> PB359.15
+PB359.33_rep1 -> PB359.23
+PB359.07_rep1 -> PB359.70
+PB361.09_rep1 -> PB361.90
+PB359.09_rep1 -> PB359.90
+
+
+
+original genotype to duplicated MUGA genotype. () original name in MUGA array 
+PB359.25_rep1 (A903DI1B.B07)  ->   PB359.25 
+
+
+
+
