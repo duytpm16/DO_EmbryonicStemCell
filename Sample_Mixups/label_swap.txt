@@ -33,4 +33,8 @@ PB359.25_rep1 (A903DI1B.B07)  ->   PB359.25
 
 
 
-
+Removing these samples
+PB357_09_rep1 
+PB362.45_rep1 
+PB360.18_rep1 
+PB361.37_rep1 
