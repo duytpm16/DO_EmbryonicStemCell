@@ -10,4 +10,4 @@ Required data:<br />
   
 ### Steps
 
-1.) 
+1.) Use fix_sample_mixup.R after having data in qtl viewer format
