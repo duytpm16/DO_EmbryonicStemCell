@@ -1,3 +1,15 @@
+options(stringsAsFactors = FALSE)
+library(dplyr)
+library(corrplot)
+library(pdist)
+library(tibble)
+library(openxlsx)
+library(qtl2convert)
+source('function_lmQTL.R')
+
+
+
+
 ### Load in data
 load('final_dataset_mESC_v2.RData')                 # QTL Viewer formatted data
 load("~/Desktop/DO_mESC/Proteomics/Original Data/Choi_probs_interp69k.RData")                          # Load in gigaMuga array
