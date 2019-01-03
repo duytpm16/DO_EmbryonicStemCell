@@ -206,4 +206,5 @@ genoprobs2['PB359.25_rep1',,] <- probs2['PB359.25',,]     ### A case where it's 
 
 ### Save data
 genoprobs <- probs_doqtl_to_qtl2(genoprobs2, map = markers, pos_column = 'pos')
+K <- calc_kinship(genoprobs, type = 'loco, cores = 0)
 save(dataset.esc.proteins, K, map, markers, genoprobs, file = 'final_dataset_mESC_v2.RData')
