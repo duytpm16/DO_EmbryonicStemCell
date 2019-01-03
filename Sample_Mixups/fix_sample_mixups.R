@@ -34,16 +34,18 @@ probs     <- probs_doqtl_to_qtl2(probs, map = markers)
 
 
 ### Just making sure name match
+#
+#   For genoprobs 195 x 8 x 69005
+#   For probs (gigaMuga) 969 x 8 x 690005
 pbid$SampleID <- gsub('-','.',pbid$SampleID)
 
-# For genoprobs 195 x 8 x 69005
+
 for(i in 2:length(genoprobs)){
     stopifnot(dimnames(genoprobs[[i]])[[1]] == dimnames(genoprobs[[1]])[[1]])
 }
 stopifnot(rownames(expr) == rownames(covar), rownames(covar) == rownames(genoprobs[[1]][[1]]), rownames(expr) == rownames(genoprobs[[1]][[1]]))
 
 
-# For probs (gigaMuga) 969 x 8 x 690005
 for(i in 2:length(probs)){
   stopifnot(dimnames(probs[[i]])[[1]] == dimnames(probs[[1]])[[1]])
   
