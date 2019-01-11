@@ -5,6 +5,7 @@ library(pdist)
 library(tibble)
 library(openxlsx)
 library(qtl2convert)
+library(miqtl)
 source('function_lm_MUGA_miQTL.R')
 
 
