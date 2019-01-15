@@ -39,8 +39,8 @@ PB359.25_rep1 (A903DI1B.B07) (M) ->   PB359.25 (F)        Note*: (M) Obsolete
 
 
 
-Removing these samples
-PB357_09_rep1 (M)
-PB362.45_rep1 (F)
-PB360.18_rep1 (F)
-PB361.37_rep1 (F)
+Removing these samples on left or make them replicates of the right
+PB357.09_rep1 (M) -> PB360.45_rep1 (M)
+PB362.45_rep1 (F) -> PB360.76_rep1 (F)
+PB360.18_rep1 (F) -> PB366.18_rep1 (M)
+PB361.37_rep1 (F) -> PB360.93_rep1 (M)
