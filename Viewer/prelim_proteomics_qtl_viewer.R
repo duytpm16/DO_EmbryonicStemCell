@@ -219,7 +219,7 @@ cc <- match(colnames(new_raw), matches$sampleid)
 colnames(new_raw) <-  matches$correct_id[cc]
 new_raw <- as.matrix(new_raw)
 new_raw[new_raw == 0] <- NA
-
+new_raw <- new_raw[order(rownames(new_raw)), order(colnames(new_raw))]
 
 
 
@@ -258,17 +258,6 @@ rankZ <- function (x) {
 new_rankz <- apply(new_norm, 1, rankZ)
 
 
-
-
-
-
-
-
-
-### Just reording column in order
-new_raw <- new_raw[order(rownames(new_raw)),]
-new_norm <- new_norm[order(rownames(new_norm)),]
-new_rankz <- new_rankz[,order(colnames(new_rankz))]
 
 
 
