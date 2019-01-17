@@ -15,10 +15,10 @@ library(qtl2)
 
 
 ### Read in data with corrected sampled IDs
-load("~/Desktop/prelim_proteomics_correctedIDs.RData")                          # Preliminary pQTL mapping .RData file, by Selcan, /projects/munger-lab/projects/DO_eQTL_comparison/data
-load("~/Desktop/do_mesc_corrected_genoprobs_v1.1.RData")                        # Created by Duy, swapped genotypes but not sample IDs, /projects/munger-lab/projects/DO_eQTL_comparison/data
-load("~/Desktop/Corrected_PBID_SampleMatch_Key.RData")                          # Correct matching IDs file by Selcan, /projects/munger-lab/projects/DO_eQTL_comparison/data
-ensembl_94_prot  <- readRDS("~/Desktop/reference_protein_info_ensembl_94.rds")  # Created from https://github.com/duytpm16/Proteomics-Utils/blob/master/extract_protein_fasta_info.R using Ensembl 94
+load("~/Desktop/prelim_proteomics_correctedIDs.RData")                # Preliminary pQTL mapping .RData file, by Selcan, /projects/munger-lab/projects/DO_eQTL_comparison/data
+load("~/Desktop/do_mesc_corrected_genoprobs_v1.1.RData")              # Created by Duy, swapped genotypes but not sample IDs, /projects/munger-lab/projects/DO_eQTL_comparison/data
+load("~/Desktop/Corrected_PBID_SampleMatch_Key.RData")                # Correct matching IDs file by Selcan, /projects/munger-lab/projects/DO_eQTL_comparison/data
+ensembl_90_prot  <- readRDS("reference_protein_info_ensembl_90.rds")  # Created from https://github.com/duytpm16/Proteomics-Utils/blob/master/extract_protein_fasta_info.R using Ensembl 94
 orig_samples_key <- readRDS('do_esc_sample_ids.rds')
 
 
@@ -39,7 +39,7 @@ new_annots <- annot %>%
                     select(protein_id) %>%                                             # Get only protein ID column
                     filter(protein_id %in% rownames(raw.expr)) %>%                     # Get proteins in rownames of raw.expr because there is less than 50% NAs for these protein expressions
                     filter(!(grepl('##', protein_id) | grepl('sp',protein_id)))  %>%   # Filter out proteins that start with '##' or 'sp'
-                    merge(., ensembl_94_prot, by.x = 'protein_id', all.x = TRUE) %>%   # Merge protein ID with ensembl 94 annotation
+                    merge(., ensembl_90_prot, by.x = 'protein_id', all.x = TRUE) %>%   # Merge protein ID with ensembl 94 annotation
                     filter(prot.chr %in% c(1:19,'X')) %>%                              # Get all proteins in 1-19, X chromosomes
                     mutate(gene_id = gsub("\\..*","", gene_id))                        # Remove .* in gene ids
 table(new_annots$prot.chr)
@@ -48,7 +48,7 @@ table(new_annots$prot.chr)
 
 
 #  Get gene annotations
-gene_annots <- batchGenes(as.list(unique(new_annots$gene_id)), version = 94, species = 'Mm')
+gene_annots <- batchGenes(as.list(unique(new_annots$gene_id)), version = 90, species = 'Mm')
 new_annots  <- merge(new_annots, gene_annots[,c('gene_id','chromosome','start','end','strand', 'name','synonyms','symbol')], by = 'gene_id', all.x = TRUE)
 stopifnot(new_annots$prot.chr == new_annots$chromosome | new_annots$gene_symbol == new_annots$synonyms)
 
@@ -57,14 +57,15 @@ stopifnot(new_annots$prot.chr == new_annots$chromosome | new_annots$gene_symbol 
 
 
 
-#  new_annots: 7,816 x 11
+#  new_annots: 7,853 x 11
 new_annots <- new_annots %>%
                          mutate(start  = as.numeric(start) / 1e6,
                                 end    = as.numeric(end) / 1e6,
                                 middle = (start + end) * 0.5) %>%
-                         rename(chr=chromosome) %>%
+                         dplyr::rename(chr=chromosome) %>%
                          select(protein_id, gene_id, transcript_id, symbol, chr, 
-                                start, end, middle, strand, gene_biotype, description)
+                                start, end, middle, strand, gene_biotype, description) %>%
+                         arrange(protein_id)
 
 
 
@@ -116,30 +117,30 @@ covar.factors <- data.frame(column.name = c('sex','tmt_label'),
 
 
 
-### Creating new genoprobs. Not sure how to make probs, a 2d matrix, into 3d. 
+### Creating new genoprobs. Not sure how to make probs, a 2d matrix, into 3d.
 #       Lines 120-144 is taken from Selcan (Munger Lab).
 #
 #   probs:      552,040 x 195
-#   genoprobs:  195 x 8 x * 
-matches <- matches %>% 
-                   filter(!is.na(sampleid.esc_prot)) %>% 
-                   select(-ends_with(".npc_rna"), -ends_with(".esc_rna")) %>% 
-                   distinct() %>% 
-                   arrange(PBID) 
+#   genoprobs:  195 x 8 x *
+matches <- matches %>%
+                   filter(!is.na(sampleid.esc_prot)) %>%
+                   select(-ends_with(".npc_rna"), -ends_with(".esc_rna")) %>%
+                   distinct() %>%
+                   arrange(PBID)
 colnames(matches) <- gsub("\\.esc_prot","",colnames(matches))
 duplicates        <- matches[duplicated(matches$top_muga),]
 
-mixed   <- matches %>% 
+mixed   <- matches %>%
                    filter(mixup ==T & !endsWith(matches$sampleid,"_rep2") ) %>%
                    mutate(correct_id = ifelse(PBID %in% duplicates$PBID, paste0(PBID,"_B_repB"), paste0(PBID,"_repA"))) %>%
                    mutate(correct_id = ifelse(cor <0.5, sampleid, correct_id))
 
-matches <- matches %>% 
-                   filter(.,!sampleid %in% mixed$sampleid) %>% 
-                   mutate(correct_id= sampleid) %>% 
+matches <- matches %>%
+                   filter(.,!sampleid %in% mixed$sampleid) %>%
+                   mutate(correct_id= sampleid) %>%
                    rbind(mixed) %>%
-                   mutate(correct_id=gsub("_rep1","_repA", correct_id)) %>%  
-                   mutate(correct_id=gsub("_rep2","_B_repB", correct_id)) %>% 
+                   mutate(correct_id=gsub("_rep1","_repA", correct_id)) %>%
+                   mutate(correct_id=gsub("_rep2","_B_repB", correct_id)) %>%
                    mutate(correct_id=ifelse(! PBID %in% duplicates$PBID, gsub("_B_repB","_repA", correct_id),correct_id)) %>%
                    arrange(PBID)
 
@@ -200,7 +201,7 @@ K <- calc_kinship(genoprobs, type = 'loco', cores = 10)
 
 ### Creating new raw protein expression
 #   raw.expr: 7,945 x 195
-#   new_raw:  7,816 x 195
+#   new_raw:  7,853 x 195
 new_raw   <- read.delim("~/Desktop/DO_mESC/Proteomics/Original Data/DO_mESC_protein_quant_new.tsv")
 rownames(new_raw) <- new_raw$Protein.Id
 col_name  <- gsub('.' ,'~', colnames(new_raw), fixed = TRUE)
@@ -233,7 +234,7 @@ new_raw[new_raw == 0] <- NA
 
 ### Create new quantile normalized proteins
 #   expr.qnorm: 7,945 x 195
-#   new_norm:   7,816 x 195
+#   new_norm:   7,853 x 195
 new_norm <- normalize.quantiles(new_raw)
 dimnames(new_norm) <- dimnames(new_raw)
 
@@ -249,7 +250,7 @@ dimnames(new_norm) <- dimnames(new_raw)
 
 ### Creating new rankz proteins
 #   expr:      195 x 7,945
-#   new_rankz: 195 x 7,816
+#   new_rankz: 195 x 7,853
 rankZ <- function (x) {
     x <- rank(x, na.last = "keep", ties.method = "average")/(sum(!is.na(x)) + 1)
     qnorm(x)
@@ -261,6 +262,13 @@ new_rankz <- apply(new_norm, 1, rankZ)
 
 
 
+
+
+
+### Just reording column in order
+new_raw <- new_raw[order(rownames(new_raw)),]
+new_norm <- new_norm[order(rownames(new_norm)),]
+new_rankz <- new_rankz[,order(colnames(new_rankz))]
 
 
 
@@ -279,12 +287,13 @@ orig_samples_key$full_id <- matches$correct_id[id.index]
 orig_samples_key$array_id<- matches$top_muga[id.index]
 
 new_samples <- orig_samples_key %>%
-                                rename(mouse.id=full_id,
+                                dplyr::rename(mouse.id=full_id,
                                        PBID=id,
                                        MUGA.id=array_id,
                                        orig.name=colname) %>%
-                                select(mouse.id,PBID,MUGA.id, sex, tmt_label,tmt_num,orig.name)
-                                
+                                select(mouse.id,PBID,MUGA.id, sex, tmt_label,tmt_num,orig.name) %>%
+                                arrange(mouse.id)
+
 
 
 
@@ -317,18 +326,18 @@ rownames(new_covar)    <- new_samples$mouse.id
 
 
 
-# ### QTL Viewer dataset
+### QTL Viewer dataset
 dataset.esc.proteins <- list(annots        = new_annots,
                              covar         = new_covar,
                              covar.factors = covar.factors,
                              datatype      = 'protein',
-                             display.name  = 'DO Embryonic Stem Cell Proteins',
+                             display.name  = 'DO ESC Proteins',
                              lod.peaks     = list(),
                              norm          = t(new_norm),
                              rankz         = new_rankz,
                              raw           = t(new_raw),
                              samples       = new_samples)
 
-ensembl.version = 94
+ensembl.version = 90
 rm(list = ls()[!ls() %in% c('dataset.esc.proteins','K','genoprobs','map','markers','ensembl.version')])
 save.image("~/Desktop/prelim_proteomics_correctedIDs_v2.RData")
