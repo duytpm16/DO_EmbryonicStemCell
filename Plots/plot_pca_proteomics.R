@@ -27,11 +27,11 @@ pca.raw   <- pca(raw, method = 'svdImpute', nPcs = 5)
 pca.raw.scores <- scores(pca.raw) 
 
 
-pca.log.raw    <- pca(log(raw), method = 'bpca', nPcs = 5)
+pca.log.raw    <- pca(log(raw), method = 'svdImpute', nPcs = 5)
 pca.log.scores <- scores(pca.log.raw) 
 
 
-pca.norm        <- pca(norm, method = 'bpca', nPcs = 5)
+pca.norm        <- pca(norm, method = 'svdImpute', nPcs = 5)
 pca.norm.scores <- scores(pca.norm) 
 
 
