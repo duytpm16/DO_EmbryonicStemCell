@@ -203,8 +203,17 @@ genoprobs2['PB359.25_rep1',,] <- probs2['PB359.25',,]     ### A case where it's 
 
 
 
+### Selcan suggest to make the left samples replicates of the right
+genoprobs2['PB357.09_rep1',,] -> genoprobs2['PB360.45_rep1',,]
+genoprobs2['PB362.45_rep1',,] -> genoprobs2['PB360.76_rep1',,]
+genoprobs2['PB360.18_rep1',,] -> genoprobs2['PB366.18_rep1',,]
+genoprobs2['PB361.37_rep1',,] -> genoprobs2['PB360.93_rep1',,]                                   
+                                  
+                                   
 
-
+                                   
+                                   
+                                   
 ### Save data
 genoprobs <- probs_doqtl_to_qtl2(genoprobs2, map = markers, pos_column = 'pos')
 K <- calc_kinship(genoprobs, type = 'loco, cores = 0)
