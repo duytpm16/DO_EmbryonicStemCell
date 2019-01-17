@@ -51,9 +51,9 @@ colors[colors == 2] <- 'blue'
 
 
 ### Identify Males that look like they should be Females. I saw plots beforehand
-raw.index  <- which(pca.raw.scores[,1] > 0 & colors == 'blue')
-log.index  <- which(pca.log.scores[,1] > 0 & colors == 'blue')
-norm.index <- which(pca.norm.scores[,1] > 0 & colors == 'blue')
+raw.index  <- which(pca.raw.scores[,1] < 0 & colors == 'blue')
+log.index  <- which(pca.log.scores[,1] < 0 & colors == 'blue')
+norm.index <- which(pca.norm.scores[,1] < 0 & colors == 'blue')
 
 
 raw.pc1.index <- pca.raw.scores[raw.index,'PC1']
@@ -118,3 +118,4 @@ plot(pca.log.scores[,1],  pca.log.scores[,2],  pch = 16, col = colors, xlab = 'P
 text(x = log.pc1.index + 2, y = log.pc2.index, labels = log.label)
 plot(pca.norm.scores[,1], pca.norm.scores[,2], pch = 16, col = colors, xlab = 'PC1', ylab = 'PC2', main = 'PCA of Norm by Sex')
 text(x = norm.pc1.index + 1.5, y = norm.pc2.index, labels = norm.label)
+
