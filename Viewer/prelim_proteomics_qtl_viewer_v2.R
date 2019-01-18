@@ -294,7 +294,7 @@ new_samples['PB360.93_B_repB', 'sex'] <- 'M'
 #  Wrong sex labels
 new_samples['PB359.70_repA', 'sex']   <- 'F'
 new_samples['PB361.72_repA', 'sex']   <- 'F'
-
+new_samples['PB360.52_repA', 'sex']   <- 'F'
 
 
 
