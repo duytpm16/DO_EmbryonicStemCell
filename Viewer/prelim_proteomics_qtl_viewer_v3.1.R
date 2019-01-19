@@ -314,7 +314,8 @@ rownames(new_samples) <- new_samples$mouse.id
 new_samples['PB359.70_repA', 'sex']   <- 'F'
 new_samples['PB361.72_repA', 'sex']   <- 'F'
 new_samples['PB360.52_repA', 'sex']   <- 'F'
-
+new_samples['PB357.07_repA', 'sex']   <- 'F'
+new_samples['PB359.25_repA', 'sex']   <- 'F'
 
 
 
