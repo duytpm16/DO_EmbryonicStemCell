@@ -362,4 +362,4 @@ dataset.esc.proteins <- list(annots        = new_annots,
 
 ensembl.version = 90
 rm(list = ls()[!ls() %in% c('dataset.esc.proteins','K','genoprobs','map','markers','ensembl.version')])
-save.image("~/Desktop/prelim_proteomics_correctedIDs_v3.RData")
+save.image("~/Desktop/prelim_proteomics_correctedIDs_v3.1.RData")
