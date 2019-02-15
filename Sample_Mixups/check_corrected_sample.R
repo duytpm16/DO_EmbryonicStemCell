@@ -22,11 +22,11 @@ dataset <- get('dataset.esc.proteins')
 
 
 ### Get required data
-expr      <- dataset[['rankz']][dimnames(genoprobs[[1]])[[1]],]
-covar     <- dataset$covar[dimnames(genoprobs[[1]])[[1]],]
+expr      <- dataset[['rankz']]
+covar     <- dataset$covar
 lod.peaks <- dataset$lod.peaks$additive
 lod.peaks$qtl.chr <- as.character(lod.peaks$qtl.chr)
-lod.peaks <- lod.peaks[lod.peaks$marker.id %in% markers$marker,]
+
 
 
 
@@ -55,18 +55,19 @@ lm_QTL(c(10, 15, 20))
 
 
 ### Get correlations between predicted vs observed matrix
-cor_mat_10  <- cor(t(observed_matrix_10), t(predicted_matrix_10))
-cor_mat_15  <- cor(t(observed_matrix_15), t(predicted_matrix_15))
-cor_mat_20  <- cor(t(observed_matrix_20), t(predicted_matrix_20))
+cor_mat_10  <- cor(t(observed_matrix_10), t(predicted_matrix_10), use="pairwise.complete.obs")
+cor_mat_15  <- cor(t(observed_matrix_15), t(predicted_matrix_15), use="pairwise.complete.obs")
+cor_mat_20  <- cor(t(observed_matrix_20), t(predicted_matrix_20), use="pairwise.complete.obs")
 
 
 
 
 ### Put column names and rownames to correlation matrices
-rownames(cor_mat_10) <- colnames(cor_mat_10) <- rownames(expr)
-rownames(cor_mat_15) <-colnames(cor_mat_15) <- rownames(expr)
-rownames(cor_mat_20) <-colnames(cor_mat_20) <- rownames(expr)
 stopifnot(colnames(cor_mat_10) == colnames(cor_mat_15), colnames(cor_mat_15) == colnames(cor_mat_20))
+rownames(cor_mat_10) <- colnames(cor_mat_10) <- rownames(expr)
+rownames(cor_mat_15) <- colnames(cor_mat_15) <- rownames(expr)
+rownames(cor_mat_20) <- colnames(cor_mat_20) <- rownames(expr)
+
 
 
 
