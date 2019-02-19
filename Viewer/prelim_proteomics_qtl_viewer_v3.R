@@ -261,6 +261,7 @@ new_raw <- new_raw[rownames(new_raw) %in% new_annots$protein_id,]
 #   expr.qnorm: 7,945 x 195
 #   new_norm:   7,858 x 191
 new_norm <- normalize.quantiles(new_raw)
+new_norm <- log(new_norm)
 dimnames(new_norm) <- dimnames(new_raw)
 
 
