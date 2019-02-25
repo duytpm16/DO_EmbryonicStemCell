@@ -2,13 +2,15 @@
 options(stringsAsFactors = FALSE)
 library(clusterProfiler)
 library(ensimplR)
+library(plyr)
+library(dplyr)
 setwd('~/Desktop')
 
 
 
 
 ### Load and get data
-load("~/Desktop/DO_mESC/Proteomics/Version 3.1/prelim_proteomics_correctedIDs_v3.1.RData")
+load("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Version 3.1/prelim_proteomics_correctedIDs_v3.1.RData")
 dataset <- 'dataset.esc.proteins'
 expr.annots <- get(dataset)$annots
 lod.peaks <- get(dataset)$lod.peaks$additive
