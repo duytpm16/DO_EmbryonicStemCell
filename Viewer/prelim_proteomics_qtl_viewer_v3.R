@@ -15,11 +15,12 @@ library(qtl2)
 
 
 ### Read in data with corrected sampled IDs
-load("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Selcan Corrected IDs/prelim_proteomics_correctedIDs.RData") # Preliminary pQTL mapping .RData file, by Selcan, /projects/munger-lab/projects/DO_eQTL_comparison/data
+load("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Selcan Corrected IDs/prelim_proteomics_correctedIDs.RData")                # Preliminary pQTL mapping .RData file, by Selcan, /projects/munger-lab/projects/DO_eQTL_comparison/data
 load("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Selcan Corrected IDs/do_mesc_corrected_genoprobs_v1.1.RData")              # Created by Duy, swapped genotypes but not sample IDs, /projects/munger-lab/projects/DO_eQTL_comparison/data
-load("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Selcan Corrected IDs/Corrected_PBID_SampleMatch_Key.RData")                # Correct matching IDs file by Selcan, /projects/munger-lab/projects/DO_eQTL_comparison/data
-ensembl_90_prot  <- readRDS("~/Desktop/Ensembl/Ensembl 90/reference_protein_info_ensembl_90.rds")  # Created from https://github.com/duytpm16/Proteomics-Utils/blob/master/extract_protein_fasta_info.R using Ensembl 94
-orig_samples_key <- readRDS('~/Desktop/Munger Embrynic Stem Cells/Proteomics/Original Data/do_esc_sample_ids.rds')
+load("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Selcan Corrected IDs/Corrected_PBID_SampleMatch_Key.RData")         # Correct matching IDs file by Selcan, /projects/munger-lab/projects/DO_eQTL_comparison/data
+ensembl_90_prot  <- readRDS("~/Desktop/Ensembl/Ensembl 90/reference_protein_info_ensembl_90.rds")                                                       # Created from https://github.com/duytpm16/Proteomics-Utils/blob/master/extract_protein_fasta_info.R using Ensembl 94
+orig_samples_key <- readRDS('~/Desktop/Munger Embryonic Stem Cells/Proteomics/Original Data/do_esc_sample_ids.rds')
+
 
 
 
