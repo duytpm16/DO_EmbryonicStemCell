@@ -3,6 +3,7 @@ options(stringsAsFactors = FALSE)
 library(clusterProfiler)
 library(ensimplR)
 library(plyr)
+library(data.table)
 library(dplyr)
 setwd('~/Desktop')
 
