@@ -110,6 +110,7 @@ sum(colnames(probs) != dimnames(genoprobs[[1]])[[1]])
 
 
 genoprobs <- probs_qtl2_to_doqtl(probs = genoprobs)
+genoprobs <- genoprobs[matches$correct_id,,]
 genoprobs <- genoprobs[-which(dimnames(genoprobs)[[1]] %in% c('PB360.45_repB','PB360.76_repB','PB366.18_repB','PB360.93_repB','PB358.02_repB')),,]
 genoprobs <- probs_doqtl_to_qtl2(probs = genoprobs, map = markers)
 
