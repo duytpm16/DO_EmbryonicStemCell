@@ -4,7 +4,7 @@ library(ensimplR)                 # devtools::install_github('https://github.com
 library(dplyr)
 library(preprocessCore)           # For quantile normalization
 library(qtl2)
-
+library(qtl2convert)
 
 
 
@@ -109,9 +109,9 @@ sum(colnames(probs) != dimnames(genoprobs[[1]])[[1]])
 
 
 
-
-
-
+genoprobs <- probs_qtl2_to_doqtl(probs = genoprobs)
+genoprobs <- genoprobs[-which(dimnames(genoprobs)[[1]] %in% c('PB360.45_repB','PB360.76_repB','PB366.18_repB','PB360.93_repB','PB358.02_repB')),,]
+genoprobs <- probs_doqtl_to_qtl2(probs = genoprobs, map = markers)
 
 
 
@@ -325,6 +325,10 @@ new_samples$sex <- matches$sex[match(new_samples$mouse.id, matches$correct_id)]
 
 
 
+
+
+
+
 ### Creating new covariates
 #   covar: 195 x 10
 #   new_covar: 190 x 10
@@ -345,6 +349,10 @@ covar.factors <- data.frame(column.name = c('sex','tmt_label'),
                             int.covar = c('factor','NA'),
                             lod.peaks = c('sex_int','NA'),
                             covar.name = c('sex','NA'))
+
+
+
+
 
 
 
