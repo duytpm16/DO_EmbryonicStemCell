@@ -301,10 +301,11 @@ orig_samples_key$id       <- matches$PBID[id.index]
 
 new_samples <- orig_samples_key %>%
                                 dplyr::rename(mouse.id=full_id,
-                                              PBID=id,
-                                              MUGA.id=array_id,
+                                              pbid=id,
+                                              muga.id=array_id,
                                               orig.name=colname) %>%
-                                select(mouse.id,PBID,MUGA.id, sex, tmt_label,tmt_num,orig.name) %>%
+                                mutate(generation = 16) %>%
+                                select(mouse.id, sex, generation, tmt_label, tmt_num, pbid, muga.id,orig.name) %>%
                                 arrange(mouse.id) %>%
                                 filter(!mouse.id %in% c('PB360.45_repB','PB360.76_repB','PB366.18_repB','PB360.93_repB','PB358.02_repB'))
 rownames(new_samples) <- new_samples$mouse.id
