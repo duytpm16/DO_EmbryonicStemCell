@@ -2,7 +2,6 @@
 options(stringsAsFactors = FALSE)
 library(ensimplR)                 # devtools::install_github('https://github.com/churchill-lab/ensimplR')
 library(dplyr)
-library(preprocessCore)           # For quantile normalization
 library(qtl2)
 library(qtl2convert)
 
