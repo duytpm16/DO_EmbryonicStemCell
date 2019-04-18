@@ -180,13 +180,13 @@ new_raw <- new_raw[order(rownames(new_raw)), order(colnames(new_raw))]
 ### Normalized data: Not any further normalization but just filtering proteins and removing duplicate samples
 #   new_norm: 7,921 x 190
 new_norm <- new_raw %>%
-                   as.data.frame() %>%
-                   select(-PB360.45_repB,
-                          -PB360.76_repB,
-                          -PB366.18_repB,
-                          -PB360.93_repB,
-                          -PB358.02_repB) %>%
-                   as.matrix()
+                    as.data.frame() %>%
+                    select(-PB360.45_repB,
+                           -PB360.76_repB,
+                           -PB366.18_repB,
+                           -PB360.93_repB,
+                           -PB358.02_repB) %>%
+                    as.matrix()
 
 rm_prots <- which(rowSums(is.na(new_norm)) < ncol(new_norm) * .5 )
 new_norm <- new_norm[rm_prots,]
@@ -248,8 +248,9 @@ rownames(new_annots) <- new_annots$protein_id
 
 
 
-
-
+### Changing these since Selcan did
+new_annots[c('ENSMUSP00000152868.1', 'ENSMUSP00000136366.1'), 'gene_id'] <- c('ENSMUSG00000025453', 'ENSMUSG00000026276') 
+new_annots[c('ENSMUSP00000152868.1'), 'symbol'] <- 'Nnt'
 
 
 
@@ -299,7 +300,6 @@ orig_samples_key$full_id  <- matches$correct_id[id.index]
 orig_samples_key$array_id <- matches$top_muga[id.index]
 orig_samples_key$id       <- matches$PBID[id.index]
 
-
 new_samples <- orig_samples_key %>%
                                 dplyr::rename(mouse.id=full_id,
                                               pbid=id,
@@ -315,8 +315,8 @@ new_samples$sex <- matches$sex[match(new_samples$mouse.id, matches$correct_id)]
 
 
 
-
-
+### We decided to change this sample to Female
+new_samples['PB360.52_repA', 'sex'] <- 'F'
 
 
 
@@ -341,15 +341,17 @@ rownames(new_covar)    <- new_samples$mouse.id
 
 
 
-
-
 ### Creating covar.factors
 #   covar.factors: 2 x 5
-covar.factors <- data.frame(column.name = c('sex','tmt_label'),
-                            display.name = c('Sex','TMT Label'),
-                            int.covar = c('factor','NA'),
-                            lod.peaks = c('sex_int','NA'),
-                            covar.name = c('sex','NA'))
+covar.factors <- data.frame(sample.column = c('sex','tmt_label'),
+                            covar.column  = c('sex','NA'),
+                            display.name  = c('Sex','TMT Label'),
+                            interactive   = c(TRUE, FALSE),
+                            primary       = c('sex','NA'),
+                            lod.peaks     = c('sex','NA'))
+
+
+
 
 
 
@@ -371,17 +373,17 @@ covar.factors <- data.frame(column.name = c('sex','tmt_label'),
 
 
 ### QTL Viewer dataset
-dataset.esc.proteins <- list(annots        = new_annots,
-                             covar         = new_covar,
-                             covar.factors = covar.factors,
+dataset.esc.proteins <- list(annot.protein = as_tibble(new_annots),
+                             annot.samples = as_tibble(new_samples),
+                             covar.info    = as_tibble(covar.factors),
+                             covar.matrix  = new_covar,
+                             data          = list(norm = t(new_norm),
+                                                  raw  = t(new_raw),
+                                                  rz   = new_rankz),
                              datatype      = 'protein',
                              display.name  = 'DO ESC Proteins',
-                             lod.peaks     = list(),
-                             norm          = t(new_norm),
-                             rankz         = new_rankz,
-                             raw           = t(new_raw),
-                             samples       = new_samples)
+                             lod.peaks     = list())
 
 ensembl.version = 90
 rm(list = ls()[!ls() %in% c('dataset.esc.proteins','K','genoprobs','map','markers','ensembl.version')])
-save.image("~/Desktop/munger_esc_proteomics_v1.RData")
+save.image("~/Desktop/munger_esc_proteomics_qtl_viewer_v2.RData")
