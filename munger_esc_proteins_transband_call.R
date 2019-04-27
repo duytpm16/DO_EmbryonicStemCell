@@ -1,4 +1,4 @@
-### Code taken from Selcan (Steven Munger Lav)
+### Code taken from Selcan (Steven Munger lab)
 
 
 
