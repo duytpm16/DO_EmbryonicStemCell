@@ -133,7 +133,7 @@ bands.esc.prot$distant_esc_prot <- countOverlaps(bands.esc.prot, peaks)
 
 
 ### Final transband count
-final.bands.prots <- bands.esc.prot %>% as.data.frame() %>% dplyr::rename(chr=seqnames)
+final.bands.prots <- bands.esc.prot %>% as.data.frame() %>% rename(chr=seqnames) %>% mutate(start = start / 1e6, end = end / 1e6)
 
 
 
