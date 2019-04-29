@@ -1,7 +1,7 @@
 ### Helper lm function. Runs lm on all pQTL that pass threshold
 #    1.) threshold to subset the lod.peaks data
 lm_QTL <- 
-  function(threshold){
+  function(threshold, id, genoprobs, predict_genoprobs){
     
     threshold <- as.vector(threshold)
     
@@ -12,14 +12,14 @@ lm_QTL <-
       
         # Subset QTLs above threshold i
         high_peaks <- lod.peaks %>%
-                                filter(lod >= i & cis == TRUE)
+          filter(lod >= i & cis == TRUE)
       
       
       
         # Creating matrix to store predicted values
-        predicted_matrix           <- as.data.frame(matrix(0, nrow = length(dimnames(genoprobs[[1]])[[1]]), ncol = nrow(high_peaks)))
-        rownames(predicted_matrix) <- dimnames(genoprobs[[1]])[[1]]
-        column_names               <- character()
+        predicted_matrix           <- as.data.frame(matrix(0, nrow = length(dimnames(predict_genoprobs[[1]])[[1]]), 
+                                                           ncol = nrow(high_peaks), 
+                                                           dimnames = list(dimnames(predict_genoprobs[[1]])[[1]], high_peaks[,id][[1]])))
       
       
       
@@ -27,9 +27,9 @@ lm_QTL <-
       
         ### For each QTL
         for(j in 1:nrow(high_peaks)){
-        
+          
             # Extract QTL info
-            expr_column <- high_peaks$annot.id[j]
+            expr_column <- high_peaks[,id][[1]][j]
             qtl_chr     <- high_peaks$qtl.chr[j]
             qtl_marker  <- high_peaks$marker.id[j]
         
@@ -39,45 +39,41 @@ lm_QTL <-
         
             # Get expression of one of the pQTL
             y <- expr[ ,expr_column]
+            y <- y[!is.na(y)]
+            geno <- genoprobs[[qtl_chr]][names(y),,qtl_marker]         # Get the genotype probability at the pQTL in matrix form
+            stopifnot(names(y) == rownames(geno))
+            full_matrix  <- data.frame(cbind(pheno = y, geno))  # Combine expression, genotype probability at pQTL, and covariates together for lm function
+            
+            
+            predict_geno <- predict_genoprobs[[qtl_chr]][,,qtl_marker]
+            predict_this <- data.frame(Intercept = 1, predict_geno)
+            colnames(predict_this)[1] <- '(Intercept)'
+            predict_this <- predict_this[,-9]
+           
         
         
-        
-        
-        
-        
-            # Run lm on pQTL if no missing values are present
-            if(all(!is.na(y))){
-               column_names <- c(column_names, expr_column)               # Storing name of expression if it passes the if statement
-               geno         <- genoprobs[[qtl_chr]][,,qtl_marker]         # Get the genotype probability at the pQTL in matrix form
-              
-               full_matrix  <- data.frame(cbind(pheno = y, geno, covar))  # Combine expression, genotype probability at pQTL, and covariates together for lm function
+          # lm begins
+          fit <- lm(pheno ~ ., data = full_matrix)                   # Fit lm
+  
+          predicted_matrix[,j] <- as.matrix(predict_this) %*% coefficients(fit)[colnames(predict_this)] # Get predicted value
           
-          
-               # lm begins
-               fit <- lm(pheno ~ ., data = full_matrix)                   # Fit lm          
-               predicted_matrix[,j] <- predict(fit)                       # Get predicted value
-          
-            } # if
-        } # for j
       
-      
-      
-      
-      
-      
-      ### Rename columns of predicted matrix and get obsevered expression values in expr matrix
-      colnames(predicted_matrix) <- column_names
-      observed_matrix <- as.data.frame(expr[,column_names])
-      
-      
-      stopifnot(rownames(predicted_matrix) == rownames(observed_matrix))
-      stopifnot(colnames(predicted_matrix) == colnames(observed_matrix))
-      
-      
-      
-      ### Save predicted and observed matrix to global environment
-      assign(paste0('predicted_matrix_',i), predicted_matrix, envir = .GlobalEnv)
-      assign(paste0('observed_matrix_',i), observed_matrix, envir = .GlobalEnv)
-      
-    } # for i in threshold
- }
+    } # for j
+    
+    
+    
+    
+    
+    
+    ### Rename columns of predicted matrix and get obsevered expression values in expr matrix
+    observed_matrix <- as.data.frame(expr[,high_peaks[,id][[1]]])
+    
+
+
+    
+    ### Save predicted and observed matrix to global environment
+    assign(paste0('predicted_matrix_',i), predicted_matrix, envir = .GlobalEnv)
+    assign(paste0('observed_matrix_',i), observed_matrix, envir = .GlobalEnv)
+    
+  } # for i in threshold
+}
