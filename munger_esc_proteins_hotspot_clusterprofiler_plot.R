@@ -220,13 +220,3 @@ plot_cp + theme(legend.position = 'none') +
   ggtitle('Chromsome 17 33 Hotspot GO - Molecular Function') + theme(plot.title = element_text(hjust = 0.5))
 
 
-
-cp_data <- 'chr_17_33_KEGG'
-cp <- get(cp_data)
-n <- nrow(cp)
-plot_cp <- cnetplot(cp, showCategory = nrow(cp), layout = 'mds', colorEdge = TRUE, node_label = TRUE)
-data <- plot_cp$data
-data$color <- c(rep('cadetblue1', n), rep('dodgerblue', nrow(plot_cp$data) - n))
-plot_cp$data <- data
-plot_cp + theme(legend.position = 'none') +
-  ggtitle('Chromsome 17 33 Hotspot KEGG Pathway') + theme(plot.title = element_text(hjust = 0.5))
