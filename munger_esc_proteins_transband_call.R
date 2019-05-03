@@ -37,7 +37,7 @@ summarize <- dplyr::summarize
 
 
 ### Load viewer data
-load("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Viewer/munger_esc_proteomics_qtl_viewer_v2.RData")
+load("~/Desktop/Munger Embryonic Stem Cells/Viewer/Version 2/munger_esc_paired_mrna_proteins_full_qtl_viewer.RData")
 lod.peaks <- dataset.esc.proteins$lod.peaks$additive
 
 
@@ -53,21 +53,21 @@ lod.peaks <- dataset.esc.proteins$lod.peaks$additive
 
 # Prep the objects
 markers2 <- markers %>% 
-                mutate(chrom = chr, 
-                       chromF = factor(chr, levels=c(as.character(1:19), "X")), 
-                       n = 1:nrow(.),
-                       pos_bp = round(1e6 * pos), 
-                       pos_cM = cM, 
-                       pos_bp=as.numeric(pos_bp),
-                       pos_cM=as.numeric(pos_cM))
+  mutate(chrom = chr, 
+         chromF = factor(chr, levels=c(as.character(1:19), "X")), 
+         n = 1:nrow(.),
+         pos_bp = round(1e6 * pos), 
+         pos_cM = cM, 
+         pos_bp=as.numeric(pos_bp),
+         pos_cM=as.numeric(pos_cM))
 
 
 peaks <- lod.peaks %>% 
-                   filter(!cis) %>%
-                   rename(chrom = qtl.chr) %>% 
-                   mutate(start = round(qtl.pos * 1e6), end = start) %>%
-                   select(chrom, start, end) %>% 
-                   GRanges()
+  filter(!cis) %>%
+  rename(chrom = qtl.chr) %>% 
+  mutate(start = round(qtl.pos * 1e6), end = start) %>%
+  select(chrom, start, end) %>% 
+  GRanges()
 
 
 
@@ -99,7 +99,7 @@ windows$distant_esc_prot <- countOverlaps(windows, markers_bynum[x])
 
 ### Creating tibble of counts in windows
 window_counts <- tibble(chrom = as.character(seqnames(windows)),
-	                      start = start(windows), 
+                        start = start(windows), 
                         end   = end(windows),
                         distant_esc_prot = windows$distant_esc_prot)
 mm <- match(window_counts$start, markers2$n)
@@ -145,4 +145,4 @@ final.bands.prots <- bands.esc.prot %>% as.data.frame() %>% rename(chr=seqnames)
 
 ### Save
 rm(list = ls()[!ls() %in% 'final.bands.prots'])
-saveRDS(object = final.bands.prots, file = '~/Desktop/Munger Embryonic Stem Cells/Proteomics/Viewer/munger_esc_proteomics_transband.rds')
+saveRDS(object = final.bands.prots, file = '~/Desktop/Munger Embryonic Stem Cells/Viewer/Version 2/munger_esc_proteomics_transband_v2.rds')
