@@ -332,8 +332,7 @@ new_samples['PB360.52_repA', 'sex'] <- 'F'
 ### Creating new covariates
 #   covar: 195 x 10
 #   new_covar: 190 x 10
-new_covar <- model.matrix(~sex + tmt_label, data = new_samples)[,-1]
-colnames(new_covar)[1] <- 'sex'
+new_covar <- model.matrix(~sex, data = new_samples)[,-1, drop = FALSE]
 rownames(new_covar)    <- new_samples$mouse.id
 
 
@@ -342,12 +341,12 @@ rownames(new_covar)    <- new_samples$mouse.id
 
 ### Creating covar.factors
 #   covar.factors: 2 x 5
-covar.factors <- data.frame(sample.column = c('sex','tmt_label'),
-                            covar.column  = c('sex','NA'),
-                            display.name  = c('Sex','TMT Label'),
-                            interactive   = c(TRUE, FALSE),
-                            primary       = c('sex','NA'),
-                            lod.peaks     = c('sex','NA'))
+covar.factors <- data.frame(sample.column = c('sex'),
+                            covar.column  = c('sexM'),
+                            display.name  = c('Sex'),
+                            interactive   = c(TRUE),
+                            primary       = c('sex'),
+                            lod.peaks     = c('sex_int'))
 
 
 
