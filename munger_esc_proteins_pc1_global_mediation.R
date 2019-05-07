@@ -47,6 +47,10 @@ med_type  <- get(mediator_ds)$datatype
 
 
 
+
+
+
+
 ### Get transband with counts above 60
 transband <- transband[transband$distant_esc_prot > 60,]
 
@@ -60,7 +64,7 @@ transband <- transband[transband$distant_esc_prot > 60,]
 
 
 
-
+### Plot PCA Mediation
 interval <- 5
 color    <- 'dodgerblue'
 for(i in 1:nrow(transband)){
