@@ -7,7 +7,7 @@ library(data.table)
 library(reshape2)
 library(intermediate)
 library(pcaMethods)
-
+library(qtl2)
 
 
 
