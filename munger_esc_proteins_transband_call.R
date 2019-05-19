@@ -37,7 +37,7 @@ summarize <- dplyr::summarize
 
 
 ### Load viewer data
-load("~/Desktop/Munger Embryonic Stem Cells/Viewer/Version 2/munger_esc_paired_mrna_proteins_full_qtl_viewer.RData")
+load("~/Desktop/Munger Embryonic Stem Cells/Viewer/Version 2/munger_esc_paired_mrna_proteins_full_qtl_viewer_v2.RData")
 lod.peaks <- dataset.esc.proteins$lod.peaks$additive
 
 
