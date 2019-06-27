@@ -384,4 +384,4 @@ dataset.esc.proteins <- list(annot.protein = as_tibble(new_annots),
 
 ensembl.version = 90
 rm(list = ls()[!ls() %in% c('dataset.esc.proteins','K','genoprobs','map','markers','ensembl.version')])
-save.image("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Version 1 - TMT/munger_esc_proteomics_qtl_viewer_v1.RData")
+save.image("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Version 2 - No TMT/munger_esc_proteomics_qtl_viewer_v2.RData")
