@@ -22,7 +22,7 @@ load("~/Desktop/Munger Embryonic Stem Cells/Selcan Corrected IDs/do_mesc_correct
 load("~/Desktop/Munger Embryonic Stem Cells/Selcan Corrected IDs/Corrected_PBID_SampleMatch_Key_v2.RData")       # Correct matching IDs file by Selcan, /projects/munger-lab/projects/DO_eQTL_comparison/data
 ensembl_90_prot  <- readRDS("~/Desktop/Ensembl/Ensembl_90/reference_protein_info_ensembl_90.rds")                # Created from https://github.com/duytpm16/Proteomics-Utils/blob/master/extract_protein_fasta_info.R using Ensembl 90
 orig_samples_key <- readRDS('~/Desktop/Munger Embryonic Stem Cells/Proteomics/Original Data/do_esc_sample_ids.rds')
-raw_protein <- read.delim("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Original Data/DO_mESC_protein_quant_new.tsv")
+raw_protein      <- read.delim("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Original Data/DO_mESC_protein_quant_new.tsv")
 
 
 
@@ -39,30 +39,30 @@ raw_protein <- read.delim("~/Desktop/Munger Embryonic Stem Cells/Proteomics/Orig
 ### Get correct ID labels for samples.
 #   Lines 42-66 is taken from Selcan (Munger Lab).
 matches <- matches %>%
-  filter(!is.na(sampleid.esc_prot)) %>%
-  select(-ends_with(".npc_rna"), -ends_with(".esc_rna")) %>%
-  distinct() %>%
-  arrange(PBID)
+              filter(!is.na(sampleid.esc_prot)) %>%
+              select(-ends_with(".npc_rna"), -ends_with(".esc_rna")) %>%
+              distinct() %>%
+              arrange(PBID)
 colnames(matches) <- gsub("\\.esc_prot","",colnames(matches))
 duplicates        <- matches[duplicated(matches$top_muga),]
 
 
 
-mixed   <- matches %>%
-  filter(mixup ==T & !endsWith(matches$sampleid,"_rep2") ) %>%
-  mutate(correct_id = ifelse(PBID %in% duplicates$PBID, paste0(PBID,"_repB"), paste0(PBID,"_repA"))) %>%
-  mutate(correct_id = ifelse(cor <0.5, sampleid, correct_id))
+mixed <- matches %>%
+          filter(mixup ==T & !endsWith(matches$sampleid,"_rep2") ) %>%
+          mutate(correct_id = ifelse(PBID %in% duplicates$PBID, paste0(PBID,"_repB"), paste0(PBID,"_repA"))) %>%
+          mutate(correct_id = ifelse(cor <0.5, sampleid, correct_id))
 
 
 
 matches <- matches %>%
-  filter(.,!sampleid %in% mixed$sampleid) %>%
-  mutate(correct_id= sampleid) %>%
-  rbind(mixed) %>%
-  mutate(correct_id=gsub("_rep1","_repA", correct_id)) %>%
-  mutate(correct_id=gsub("_rep2","_repB", correct_id)) %>%
-  mutate(correct_id=ifelse(! PBID %in% duplicates$PBID, gsub("_repB","_repA", correct_id),correct_id)) %>%
-  arrange(PBID)
+              filter(.,!sampleid %in% mixed$sampleid) %>%
+              mutate(correct_id= sampleid) %>%
+              rbind(mixed) %>%
+              mutate(correct_id=gsub("_rep1","_repA", correct_id)) %>%
+              mutate(correct_id=gsub("_rep2","_repB", correct_id)) %>%
+              mutate(correct_id=ifelse(! PBID %in% duplicates$PBID, gsub("_repB","_repA", correct_id),correct_id)) %>%
+              arrange(PBID)
 
 
 #   Correcting a typo error in matches data frame
@@ -88,7 +88,7 @@ colnames(probs) <- gsub('_B_repB', '_repB', colnames(probs))
 
 ### Changing genotype sample IDs to correct labels
 for(i in 2:length(genoprobs)){
-  stopifnot(dimnames(genoprobs[[i]])[[1]] == dimnames(genoprobs[[1]])[[1]])
+   stopifnot(dimnames(genoprobs[[i]])[[1]] == dimnames(genoprobs[[1]])[[1]])
 }
 
 
@@ -151,7 +151,7 @@ rownames(new_raw) <- new_raw$Protein.Id
 col_name  <- gsub('.' ,'~', colnames(new_raw), fixed = TRUE)
 col_name  <- gsub('X' ,'', col_name, fixed = TRUE)
 colnames(new_raw) <- col_name
-new_raw <- new_raw[,colnames(new_raw) %in% orig_samples_key$colname]
+new_raw   <- new_raw[,colnames(new_raw) %in% orig_samples_key$colname]
 
 
 
