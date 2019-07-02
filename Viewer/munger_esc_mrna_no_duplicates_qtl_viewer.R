@@ -130,8 +130,6 @@ rownames(covar.matrix) <- mrna_samples$mouse.id
 
 
 ### QTL2 formatted data
-genoprobs <- esc.probs
-K         <- calc_kinship(probs = genoprobs, type = 'loco', cores = 10)
 markers   <- map_dat2 %>% 
                 mutate(pos = as.numeric(pos),
                        pos_bp = as.numeric(pos_bp)) %>%
@@ -144,6 +142,13 @@ map <- map_df_to_list(map = as.data.frame(markers),
                       pos_column    = 'pos', 
                       marker_column = 'marker.id')
 
+genoprobs <- probs_qtl2_to_doqtl(esc.probs)
+genoprobs <- probs_doqtl_to_qtl2(probs = genoprobs, 
+                                 map   = as.data.frame(markers), 
+                                 chr_column = 'chr', 
+                                 pos_column = 'pos', 
+                                 marker_column = 'marker.id')
+K         <- calc_kinship(probs = genoprobs, type = 'loco', cores = 10)
 
 
 
