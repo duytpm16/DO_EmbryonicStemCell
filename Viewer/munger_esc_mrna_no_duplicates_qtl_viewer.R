@@ -192,6 +192,6 @@ dataset.esc.mrna <- list(annot.mrna    = as_tibble(annots),
 
 ### Save
 rm(list = ls()[!ls() %in% c(grep('dataset[.]', ls(), value = TRUE),'genoprobs','K','map','markers')])
-save.image(file = '~/Desktop/Munger Embryonic Stem Cells/RNA/Version 2 - Without Duplicates/munger_esc_mrna_qtl_viewer_v2.RData')
+save.image(file = '~/Desktop/Munger Embryonic Stem Cells/RNA/Version 2 - No Duplicates/munger_esc_mrna_qtl_viewer_v2.RData')
 
 
