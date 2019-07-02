@@ -163,7 +163,7 @@ markers   <- map_dat2 %>%
               mutate(pos = bp / 1e6) %>% 
               select(marker.id, chr, pos, bp, cM) %>%
               as_tibble()
-map <- map_df_to_list(map = markers, 
+map <- map_df_to_list(map = as.data.frame(markers), 
                       chr_column    = 'chr', 
                       pos_column    = 'pos', 
                       marker_column = 'marker.id')
