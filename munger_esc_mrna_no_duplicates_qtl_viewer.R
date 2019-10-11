@@ -186,7 +186,7 @@ dataset.esc.mrna <- list(annot.mrna    = as_tibble(annots),
                                               raw  = mrna_raw,
                                               rz   = mrna_rankz),
                          datatype      = 'mrna',
-                         display.name  = 'Embryonic Stem Cell Transcripts',
+                         display.name  = 'ESC Transcripts',
                          lod.peaks     = list())
 
 
